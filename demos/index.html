@@ -9,7 +9,8 @@
 $(function () {
 	// initial states demo:
     $('#initial_demo :checkbox').tristate();
-    $('#initial_demo button').click(function () {
+    $('#initial_demo button').click(function (e) {
+        e.preventDefault();
         alert('Initially unchecked: ' +
              $('#initially_unchecked').tristate('state')
              + '.\nInitially checked: ' +
@@ -19,11 +20,13 @@ $(function () {
     });
     // get states demo:
     $('#get_states_demo :checkbox').tristate();
-    $('#get_states_demo button:not(#get_all_states)').click(function () {
+    $('#get_states_demo button:not(#get_all_states)').click(function (e) {
+        e.preventDefault();
         var $checkbox = $(this).siblings(':checkbox');
         alert($checkbox.attr('id') + ': ' + $checkbox.tristate('state'));
     });
-    $('#get_all_states').click(function () {
+    $('#get_all_states').click(function (e) {
+        e.preventDefault();
         var object_output = $('#get_states_demo :checkbox').tristate('state'),
             text_output = '{\n';
             
@@ -32,6 +35,40 @@ $(function () {
         });
         text_output += '}';
         alert(text_output);
+    });
+    // set states demos:
+    var $boxA = $('#one_to_set');
+    var $both_boxes = $('#set_states_demo :checkbox');
+    $both_boxes.tristate();
+    $('#set_one_only_unchecked').click(function (e) {
+        e.preventDefault();
+        $boxA.tristate('state', $.tristates.unchecked);
+    });
+    $('#set_one_only_mixed').click(function (e) {
+        e.preventDefault();
+        $boxA.tristate('state', $.tristates.mixed);
+    });
+    $('#set_one_only_checked').click(function (e) {
+        e.preventDefault();
+        $boxA.tristate('state', $.tristates.checked);
+    });
+    $('#set_both_unchecked').click(function (e) {
+        e.preventDefault();
+        $both_boxes.tristate('state', $.tristates.unchecked);
+    });
+    $('#set_both_mixed').click(function (e) {
+        e.preventDefault();
+        $both_boxes.tristate('state', $.tristates.mixed);
+    });
+    $('#set_both_checked').click(function (e) {
+        e.preventDefault();
+        $both_boxes.tristate('state', $.tristates.checked);
+    });
+    // click cycling demos:
+    $('#click_cycle').tristate();
+    $('#set_to_mixed').click(function(e) {
+        e.preventDefault();
+        $('#click_cycle').tristate('state', $.tristates.mixed);
     });
 });
 
@@ -57,6 +94,32 @@ $(function () {
             <label>Mixed: <input id="get_mixed" type="checkbox" data-tristate="mixed" disabled="true"> <button>Get state</button></label>
             <label>Checked: <input id="get_checked" type="checkbox" checked="checked" disabled="true"> <button>Get state</button></label>
             <button id="get_all_states">Get all states together</button>
+        </form>
+    </section>
+    <section id="set_states_demo">
+        <h2>The state of a checkbox can be set on a per checkbox basis or by using a jQuery instace with multiple checkboxes</h2>
+        <form>
+            <label>Box A: <input id="one_to_set" type="checkbox"></label>
+            <label>Box B: <input id="two_to_set" type="checkbox"></label>
+            <button id="set_one_only_unchecked">Set box A to unchecked</button>
+            <button id="set_one_only_mixed">Set box A to mixed</button>
+            <button id="set_one_only_checked">Set box A to checked</button>
+            <button id="set_both_unchecked">Set boxes A and B to unchecked</button>
+            <button id="set_both_mixed">Set boxes A and B to mixed</button>
+            <button id="set_both_checked">Set boxes A and B to checked</button>
+        </form>
+    </section>
+    <section id="clicks">
+        <h2>Clicking on a tristate checkbox follows these rules:</h2>
+        <ul>
+            <li>An unchecked box will become checked</li>
+            <li>A mixed box will become checked</li>
+            <li>A checked box will become unchecked</li>
+        </ul>
+        <p>To get the box back to the mixed state, use the button below</p>
+        <form>
+            <label>Click me to cycle: <input id="click_cycle" type="checkbox" data-tristate="mixed"></label>
+            <button id="set_to_mixed">Reset to mixed</button>
         </form>
     </section>
 </body>
