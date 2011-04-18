@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test for $.tristate()</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../jquery.tristate-checkbox.js"></script>
+<script type="text/javascript">
+// testing code here:
+$(function () {
+	// initial states demo:
+    $('#initial_demo :checkbox').tristate();
+    $('#initial_demo button').click(function () {
+        alert('Initially unchecked: ' +
+             $('#initially_unchecked').tristate('state')
+             + '.\nInitially checked: ' +
+             $('#initially_checked').tristate('state')
+             + '.\nInitially mixed: ' +
+             $('#initially_mixed').tristate('state'));
+    });
+    // get states demo:
+    $('#get_states_demo :checkbox').tristate();
+    $('#get_states_demo button:not(#get_all_states)').click(function () {
+        var $checkbox = $(this).siblings(':checkbox');
+        alert($checkbox.attr('id') + ': ' + $checkbox.tristate('state'));
+    });
+    $('#get_all_states').click(function () {
+        var object_output = $('#get_states_demo :checkbox').tristate('state'),
+            text_output = '{\n';
+            
+        $.each(object_output, function (id, value) {
+            text_output += '    ' + id + ': ' + value + '\n';
+        });
+        text_output += '}';
+        alert(text_output);
+    });
+});
+
+</script>
+</head>
+<body>
+    <header>
+        <h1>Demos for jQuery.tristate()</h1>
+    </header>
+    <section id="initial_demo">
+        <h2>The initial state of the checkbox is recorded by the plugin:</h2>
+    	<form>
+    	    <label>No <em>data-tristate</em> attribute, unchecked: <input id="initially_unchecked" type="checkbox" disabled="true"></label>
+            <label>No <em>data-tristate</em> attribute, checked: <input id="initially_checked" type="checkbox" checked="checked" disabled="true"></label>
+            <label><em>data-tristate</em> attribute set to mixed, unchecked: <input id="initially_mixed" type="checkbox" data-tristate="mixed" disabled="true"></label>
+    	</form>
+        <button>Read back the initial states</button>
+    </section>
+    <section id="get_states_demo">
+        <h2>The current state of boxes can be retireved either individually or en-mass:</h2>
+        <form>
+            <label>Unchecked: <input id="get_unchecked" type="checkbox" disabled="true"> <button>Get state</button></label>
+            <label>Mixed: <input id="get_mixed" type="checkbox" data-tristate="mixed" disabled="true"> <button>Get state</button></label>
+            <label>Checked: <input id="get_checked" type="checkbox" checked="checked" disabled="true"> <button>Get state</button></label>
+            <button id="get_all_states">Get all states together</button>
+        </form>
+    </section>
+</body>
+</html>
