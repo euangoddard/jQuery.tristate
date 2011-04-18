@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>API documentation for $.tristate()</title>
+<link href='http://fonts.googleapis.com/css?family=Cabin:regular,regularitalic,bold' rel='stylesheet' type='text/css'>
+<style>
+* {
+    margin: 0; padding: 0;
+}
+body {
+    padding: 1em;
+    line-height: 1.5;
+    font-family: 'Cabin', arial, snas-serif;
+}
+code, pre {
+    font-family: 'Lucida Console', Courier, sans-serif;
+    font-size: 90%;
+}
+h1, h2, h3, p {
+    margin: 1em 0 0.5em;
+}
+li {
+    margin: 0.2em 2em;
+}
+section {
+    border-top: 1px dotted #333;
+}
+article {
+    margin: 0.5em 2em;
+}
+.warning, .note {
+    padding: 0.5em;
+}
+.warning {
+    background-color: #FFE4E4;
+    border: 1px solid #FF6666;
+}
+.note {
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>API documentation for $.tristate()</h1>
+    </header>
+    <section id="init">
+        <h2><code>$(...).tristate()</code></h2>
+        <p>
+            Sets all elements in the jQuery selector to become tristate
+            checkboxes. This will override the default behaviour of the checkbox
+            to create the following click transitions:
+        </p>
+        <ul>
+            <li>An unchecked box will become checked</li>
+            <li>A mixed box will become checked</li>
+            <li>A checked box will become unchecked</li>
+        </ul>
+        <p class="note">
+            <b>NB:</b> There is no means by clicking on the checkbox to get into
+            the <em>mixed</em> state. This can only be achieved by
+            <a href="#setting-state">setting the state</a> documentation.
+        </p>
+        <article>
+            <h3>Initial states</h3>
+            <p>
+                When <code>$(...).tristate()</code> iterates over the wrapped set
+                it uses the following rules to determine the initial tristate of the
+                checkbox:
+            </p>
+            <ol>
+                <li>
+                    Check to see whether the <code>data-tristate</code> attribute is
+                    set on the element. If so, set the tristate to this value
+                    providing it is a valid state.
+                </li>
+                <li>
+                    If <code>data-tristate</code> is not set or is invalid, the code
+                    falls back to examining the <code>checked</code> attribute of
+                    the element. If it is present, then the state will be
+                    <em>checked</em>, otherwise, it will be <em>unchecked</em>.
+                </li>
+            </ol>
+        </article>
+    </section>
+    <section id="getting-state">
+        <h2><code>$(...).tristate('state')</code></h2>
+        <p>
+            Gets the current state of the checkbox(es) specified in the wrapped
+            set. The behviour differs between when a single checkbox element is
+            in the set and when multiple (or indeed zero) checkboxes are in the
+            set.
+        </p>
+        <article id="getting-single-box-state">
+            <h3>Single checkbox</h3>
+            <p>
+                If a single checkbox is specified in the wrapped set, e.g. 
+                <code>$('#my-checkbox').tristate('state')</code>, a single
+                textual string is returned indicating the current state of
+                the checkbox.
+            </p>
+        </article>
+        <article id="getting-multiple-boxes-states">
+            <h3>Multiple checkboxes</h3>
+            <p>
+                If multiple checkboxes are specified in the wrapped set, e.g. 
+                <code>$(':checkbox').tristate('state')</code>, an object is
+                returned indicating the current state of all the checkboxes.
+            </p>
+            <p>
+                If a given checkbox in the wrapped set does not have an ID, its
+                index in the wrapped set will be used, otherwise its ID will be
+                used as the key. The utility of this falback is to allow any
+                desired checkbox from the wrapped set to be extracted if needs
+                be. However, it is recommended that IDs are used in a general
+                workflow.
+            </p>
+        </article>
+    </section>
+    <section id="setting-state">
+        <h2><code>$(...).tristate('state', new_state)</code></h2>
+        <p>
+            Sets the current state of the checkbox(es) specified in the wrapped
+            set to <em>new_state</em>.
+        </p>
+        <p class="warning">
+            <b>NB:</b> if <em>new_state</em> is not a valid state an exception
+            will be thrown.
+        </p>
+        
+    </section>
+    <section id="states">
+        <h2><code>$.tristates</code></h2>
+        <p>
+            An objects which contains the states for tristate checkboxes. This
+            is for convenience so that you can do things like
+            <code>$('#my-tristate').tristate('state', $.tristates.mixed);</code>
+            to set the state of the specified tristate checkbox to
+            <em>mixed</em>.
+        </p>
+        <p class="note">
+            It is best to use these constants to refer to the states in case the
+            underlying constant values changes in a later release.
+        </p>
+        <p>The object has the following structure:</p>
+        <pre>{ unchecked: 'unchecked',
+  mixed: 'mixed',
+  checked: 'checked'
+}</pre>
+        <p class="warning">
+            <b>Warning:</b> Modifying the value(s) of the data in
+            <code>$.tristates</code> would result in all instances of tristate
+            checkboxes ceasing to function. Please leave this alone!
+        </p>
+    </section>
+</body>
+</html>

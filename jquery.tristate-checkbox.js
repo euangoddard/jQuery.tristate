@@ -9,6 +9,12 @@
                     initial_state = null,
                     data_tristate;
                 
+                if (!$checkbox.is(':checkbox')) {
+                    // There's no point in making anything other than a checkbox
+                    // become a tristate checkbox, so skip this:
+                    return true;
+                }
+                
                 // Determine the initial state. First see whether the
                 // "data-tristate" attribute is set:
                 data_tristate = $checkbox.attr('data-tristate'); 
@@ -35,6 +41,12 @@
         },
         state: function (new_state) {
             // Get or set the state of the checkbox(es) specified
+            
+            // Verify that this box has been converted to a tristate checkbox:
+            if (!$(this).data('tristate')) {
+                $.error('You must first set the checkbox(es) to be a tristate checkbox before calling this method')
+            }
+            
             if (typeof new_state === 'undefined') {
                 return self._get_state.apply(this);
             } else {
@@ -116,7 +128,6 @@
                     default:
                         $.error('Unrecognized state for checkbox');
                 }
-                self._debug(new_state);
                 self._set_state.apply($checkbox, [new_state]);
             }, 13);
             
