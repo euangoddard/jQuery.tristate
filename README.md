@@ -11,7 +11,7 @@ Include jquery.tristate in your HTML, e.g.
 ```
 
 Then in in the DOM ready event handler, tell the plug-in which element(s) you
-want to be sticky:
+want to be tristate checkboxes:
 
 ```javascript
 $(function () {
