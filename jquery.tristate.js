@@ -1,5 +1,14 @@
-/* jQuery.tristate() */
-(function ($) {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], factory);
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+    'use strict';
+
     var self = {
         init: function () {
 
@@ -155,4 +164,4 @@
         'mixed': 'mixed'
     };
     
-})(jQuery);
+}));
